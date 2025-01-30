@@ -7,8 +7,6 @@ void main() {
   runApp(const MyApp());
 }
 
-// comentario prueba
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -50,6 +48,9 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         isLoading = true;
       });
+
+      await Future.delayed(const Duration(seconds: 2));
+
       final opciones = [opcionUno, opcionDos];
       final random = Random();
       decision = opciones[random.nextInt(opciones.length)];
@@ -95,8 +96,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                   });
                                 }, 'Limpiar')
                               ])),
-                      Text(decision,
-                          style: const TextStyle(color: Colors.white))
+                      isLoading
+                          ? const CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Color.fromARGB(255, 110, 217, 161)))
+                          : Text(decision,
+                              style: const TextStyle(color: Colors.white))
                     ]))));
   }
 }
