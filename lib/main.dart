@@ -33,17 +33,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController opcionUn = TextEditingController();
-  TextEditingController opcionDo = TextEditingController();
 
   String decision = '';
   bool isLoading = false;
 
   void elegirOpcion() async {
-    final opcionUno = opcionUn.text;
-    final opcionDos = opcionDo.text;
+    final opcionesTexto = opcionUn.text;
 
-    if (opcionUno.isEmpty || opcionDos.isEmpty) {
-      decision = 'Ingresa las dos opciones';
+    if (opcionesTexto.isEmpty) {
+      decision = 'Ingresa las opciones separadas por comas';
     } else {
       setState(() {
         isLoading = true;
@@ -51,7 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
       await Future.delayed(const Duration(seconds: 2));
 
-      final opciones = [opcionUno, opcionDos];
+      final opciones = opcionesTexto.split(',').map((e) => e.trim()).toList();
+
       final random = Random();
       decision = opciones[random.nextInt(opciones.length)];
       setState(() {
@@ -75,8 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: [
                       const Icon(Icons.psychology_alt,
                           color: Color.fromARGB(255, 110, 217, 161), size: 80),
-                      campoText(opcionUn, 'Opcion 1'),
-                      campoText(opcionDo, 'Opcion 2'),
+                      campoText(opcionUn, 'Separa las opciones con una coma'),
                       SizedBox(
                           width: 600,
                           child: Row(
@@ -91,7 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                   setState(() {
                                     decision = '';
                                     opcionUn.clear();
-                                    opcionDo.clear();
                                     FocusScope.of(context).unfocus();
                                   });
                                 }, 'Limpiar')
@@ -108,16 +105,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
 campoText(TextEditingController controlador, String text) {
   return SizedBox(
-      width: 250,
+      width: 280,
+      height: 200,
       child: TextField(
+          maxLines: null,
+          expands: true,
           textAlign: TextAlign.center,
           style: const TextStyle(color: Colors.white),
           controller: controlador,
           decoration: InputDecoration(
               hintText: text,
+              contentPadding: const EdgeInsets.all(10),
+              border: const OutlineInputBorder(),
               hintStyle:
-                  const TextStyle(color: Color.fromARGB(255, 216, 216, 216)),
-              border: const OutlineInputBorder())));
+                  const TextStyle(color: Color.fromARGB(255, 216, 216, 216)))));
 }
 
 boton(VoidCallback funcion, String text) {
