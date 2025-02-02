@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final opcionesTexto = opcionUn.text;
 
     if (opcionesTexto.isEmpty) {
-      decision = 'Ingresa las opciones separadas por comas';
+      decision = "Ingresa las opciones separadas por comas";
     } else {
       setState(() {
         isLoading = true;
@@ -58,6 +58,29 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     }
     FocusScope.of(context).unfocus();
+  }
+
+  void lista() async {
+    final opcionesTexto = opcionUn.text;
+    if (opcionesTexto.isEmpty) {
+      decision = "Ingresa las opciones separadas por comas";
+    } else {
+      setState(() {
+        isLoading = true;
+      });
+
+      await Future.delayed(const Duration(seconds: 2));
+
+      final opciones = opcionesTexto.split(',').map((e) => e.trim()).toList();
+
+      opciones.shuffle();
+      decision = opciones.join(', ');
+      setState(() {
+        isLoading = false;
+      });
+    }
+    FocusScope.of(context).unfocus();
+    setState(() {});
   }
 
   void limpiar() {
@@ -85,28 +108,32 @@ class _MyHomePageState extends State<MyHomePage> {
                       SizedBox(
                           width: 600,
                           child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 boton(() {
                                   setState(() {
                                     elegirOpcion();
                                   });
                                 }, 'Decidir'),
+                                boton(() => lista(), "Lista"),
                                 boton(() => limpiar(), 'Limpiar')
                               ])),
                       isLoading
                           ? const CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation<Color>(
                                   Color.fromARGB(255, 110, 217, 161)))
-                          : Text(decision,
-                              style: const TextStyle(color: Colors.white))
+                          : SizedBox(
+                            width: 340,
+                              child: Text(decision,
+                              textAlign: TextAlign.center,
+                                  style: const TextStyle(color: Colors.white)))
                     ]))));
   }
 }
 
 campoText(TextEditingController controlador, String text) {
   return SizedBox(
-      width: 280,
+      width: 330,
       height: 200,
       child: TextField(
           maxLines: null,
