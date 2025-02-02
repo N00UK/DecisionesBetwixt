@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'dart:math';
@@ -58,7 +58,14 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     }
     FocusScope.of(context).unfocus();
-    setState(() {});
+  }
+
+  void limpiar() {
+    setState(() {
+      decision = "";
+      opcionUn.clear();
+      FocusScope.of(context).unfocus();
+    });
   }
 
   @override
@@ -85,13 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     elegirOpcion();
                                   });
                                 }, 'Decidir'),
-                                boton(() {
-                                  setState(() {
-                                    decision = '';
-                                    opcionUn.clear();
-                                    FocusScope.of(context).unfocus();
-                                  });
-                                }, 'Limpiar')
+                                boton(() => limpiar(), 'Limpiar')
                               ])),
                       isLoading
                           ? const CircularProgressIndicator(
