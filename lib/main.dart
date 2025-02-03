@@ -34,8 +34,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController opcionUn = TextEditingController();
 
-  String decision = '';
+  String decision = "";
   bool isLoading = false;
+  String ultimasOpciones = "";
 
   void elegirOpcion() async {
     final opcionesTexto = opcionUn.text;
@@ -83,6 +84,14 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {});
   }
 
+  void guardar() {
+    ultimasOpciones = opcionUn.text;
+  }
+
+  void recuperar() {
+    opcionUn.text = ultimasOpciones;
+  }
+
   void limpiar() {
     setState(() {
       decision = "";
@@ -111,21 +120,24 @@ class _MyHomePageState extends State<MyHomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 boton(() {
-                                  setState(() {
-                                    elegirOpcion();
-                                  });
-                                }, 'Decidir'),
-                                boton(() => lista(), "Lista"),
-                                boton(() => limpiar(), 'Limpiar')
+                                  guardar();
+                                  elegirOpcion();
+                                }, Icons.done),
+                                boton(() {
+                                  guardar();
+                                  lista();
+                                }, Icons.format_list_numbered_rtl),
+                                boton(() => recuperar(), Icons.replay),
+                                boton(() => limpiar(), Icons.clear)
                               ])),
                       isLoading
                           ? const CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation<Color>(
                                   Color.fromARGB(255, 110, 217, 161)))
                           : SizedBox(
-                            width: 340,
+                              width: 340,
                               child: Text(decision,
-                              textAlign: TextAlign.center,
+                                  textAlign: TextAlign.center,
                                   style: const TextStyle(color: Colors.white)))
                     ]))));
   }
@@ -149,12 +161,12 @@ campoText(TextEditingController controlador, String text) {
                   const TextStyle(color: Color.fromARGB(255, 216, 216, 216)))));
 }
 
-boton(VoidCallback funcion, String text) {
-  return InkWell(
-      onTap: funcion,
-      child: SizedBox(
-          width: 100,
-          height: 50,
-          child: ColoredBox(
-              color: Colors.white, child: Center(child: Text(text)))));
+boton(VoidCallback funcion, IconData icono) {
+  return SizedBox(
+      width: 40,
+      child: FloatingActionButton(
+          shape: const CircleBorder(),
+          backgroundColor: Colors.white,
+          onPressed: funcion,
+          child: Icon(icono, color: const Color.fromARGB(255, 110, 217, 161))));
 }

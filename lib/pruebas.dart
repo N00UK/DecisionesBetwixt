@@ -72,3 +72,14 @@
 //     return Scaffold(body: Center());
 //   }
 // }
+
+// ---------------------------------------- primer boton
+// boton(VoidCallback funcion, String text) {
+//   return InkWell(
+//       onTap: funcion,
+//       child: SizedBox(
+//           width: 100,
+//           height: 50,
+//           child: ColoredBox(
+//               color: Colors.white, child: Center(child: Text(text)))));
+// }
