@@ -75,7 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
       final opciones = opcionesTexto.split(',').map((e) => e.trim()).toList();
 
       opciones.shuffle();
-      decision = opciones.join(', ');
+      decision = opciones.asMap().entries.map((entry) {
+        return '${entry.key + 1}.${entry.value}';
+      }).join('\n');
       setState(() {
         isLoading = false;
       });
@@ -107,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Center(
             child: SizedBox(
                 width: 400,
-                height: 400,
+                height: 450,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -136,9 +138,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Color.fromARGB(255, 110, 217, 161)))
                           : SizedBox(
                               width: 340,
-                              child: Text(decision,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(color: Colors.white)))
+                              height: 60,
+                              child: Scrollbar(
+                                  child: SingleChildScrollView(
+                                      physics: const AlwaysScrollableScrollPhysics(),
+                                      child: Text(decision,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              color: Colors.white)))))
                     ]))));
   }
 }
