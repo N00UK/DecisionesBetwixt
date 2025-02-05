@@ -50,10 +50,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
       await Future.delayed(const Duration(seconds: 2));
 
-      final opciones = opcionesTexto.split(',').map((e) => e.trim()).toList();
+      final opciones = opcionesTexto
+          .split(',')
+          .map((e) => e.trim())
+          .where((e) => e.isNotEmpty)
+          .toList();
 
-      final random = Random();
-      decision = opciones[random.nextInt(opciones.length)];
+      if (opciones.isEmpty) {
+        decision = "No hay opciones válidas";
+      } else {
+        final random = Random();
+        decision = opciones[random.nextInt(opciones.length)];
+      }
+
       setState(() {
         isLoading = false;
       });
@@ -72,12 +81,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
       await Future.delayed(const Duration(seconds: 2));
 
-      final opciones = opcionesTexto.split(',').map((e) => e.trim()).toList();
+      final opciones = opcionesTexto
+          .split(',')
+          .map((e) => e.trim())
+          .where((e) => e.isNotEmpty)
+          .toList();
 
-      opciones.shuffle();
-      decision = opciones.asMap().entries.map((entry) {
-        return '${entry.key + 1}.${entry.value}';
-      }).join('\n');
+      if (opciones.isEmpty) {
+        decision = "No hay opciones válidas";
+      } else {
+        opciones.shuffle();
+        decision = opciones.asMap().entries.map((entry) {
+          return '${entry.key + 1}. ${entry.value}';
+        }).join('\n');
+      }
+
       setState(() {
         isLoading = false;
       });
@@ -141,7 +159,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               height: 60,
                               child: Scrollbar(
                                   child: SingleChildScrollView(
-                                      physics: const AlwaysScrollableScrollPhysics(),
+                                      physics:
+                                          const AlwaysScrollableScrollPhysics(),
                                       child: Text(decision,
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
