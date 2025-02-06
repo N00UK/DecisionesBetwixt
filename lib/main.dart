@@ -120,51 +120,117 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void info() {
+    showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return const AlertDialog(
+              insetPadding: EdgeInsets.symmetric(vertical: 50),
+              content: SizedBox(
+                  width: 100,
+                  height: 300,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("DecideMe",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20)),
+                        Text(
+                            "Para que la aplicación funcione de una manera adecuada, separa cada idea con una coma (,) para que el sistema las reconozca como elementos distintos.",
+                            textAlign: TextAlign.justify),
+                        SizedBox(
+                            width: 400,
+                            child: Row(children: [
+                              Icon(Icons.check_circle),
+                              Text(
+                                  "Este botón elige una idea al azar\nentre las que ingresaste.")
+                            ])),
+                        SizedBox(
+                            width: 400,
+                            child: Row(children: [
+                              Icon(Icons.playlist_add_check_circle),
+                              Text("Mezcla y ordena tus ideas al azar.")
+                            ])),
+                        SizedBox(
+                            width: 400,
+                            child: Row(children: [
+                              Icon(Icons.replay_circle_filled),
+                              Text(
+                                  "Restaura las opciones que ingresaste\npor última vez.")
+                            ])),
+                        SizedBox(
+                            width: 400,
+                            child: Row(children: [
+                              Icon(Icons.cancel),
+                              Text("Limpia todas las ideas ingresadas.")
+                            ]))
+                      ])));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: const Color.fromARGB(255, 11, 54, 63),
         body: Center(
             child: SizedBox(
                 width: 400,
-                height: 450,
+                height: 750,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Icon(Icons.psychology_alt,
-                          color: Color.fromARGB(255, 110, 217, 161), size: 80),
-                      campoText(opcionUn, 'Separa las opciones con una coma'),
+                      Row(children: [boton(() => info(), Icons.help)]),
                       SizedBox(
-                          width: 600,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          height: 600,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                boton(() {
-                                  guardar();
-                                  elegirOpcion();
-                                }, Icons.done),
-                                boton(() {
-                                  guardar();
-                                  lista();
-                                }, Icons.format_list_numbered_rtl),
-                                boton(() => recuperar(), Icons.replay),
-                                boton(() => limpiar(), Icons.clear)
+                                const SizedBox(
+                                    child: Icon(Icons.psychology_alt,
+                                        color:
+                                            Color.fromARGB(255, 110, 217, 161),
+                                        size: 80)),
+                                campoText(opcionUn,
+                                    'Separa las opciones con una coma'),
+                                SizedBox(
+                                    width: 600,
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          boton(() {
+                                            guardar();
+                                            elegirOpcion();
+                                          }, Icons.check_circle),
+                                          boton(() {
+                                            guardar();
+                                            lista();
+                                          }, Icons.playlist_add_check_circle),
+                                          boton(() => recuperar(),
+                                              Icons.replay_circle_filled),
+                                          boton(() => limpiar(), Icons.cancel)
+                                        ])),
+                                isLoading
+                                    ? const CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation<
+                                                Color>(
+                                            Color.fromARGB(255, 110, 217, 161)))
+                                    : SizedBox(
+                                        width: 340,
+                                        height: 150,
+                                        child: Center(
+                                            child: Scrollbar(
+                                                child: SingleChildScrollView(
+                                                    physics:
+                                                        const AlwaysScrollableScrollPhysics(),
+                                                    child: Text(decision,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: const TextStyle(
+                                                            color: Colors
+                                                                .white))))))
                               ])),
-                      isLoading
-                          ? const CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Color.fromARGB(255, 110, 217, 161)))
-                          : SizedBox(
-                              width: 340,
-                              height: 60,
-                              child: Scrollbar(
-                                  child: SingleChildScrollView(
-                                      physics:
-                                          const AlwaysScrollableScrollPhysics(),
-                                      child: Text(decision,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              color: Colors.white)))))
                     ]))));
   }
 }
@@ -192,7 +258,9 @@ boton(VoidCallback funcion, IconData icono) {
       width: 40,
       child: FloatingActionButton(
           shape: const CircleBorder(),
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           onPressed: funcion,
-          child: Icon(icono, color: const Color.fromARGB(255, 110, 217, 161))));
+          child: Icon(icono,
+              color: const Color.fromARGB(255, 110, 217, 161), size: 35)));
 }
