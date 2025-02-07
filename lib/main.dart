@@ -170,68 +170,79 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: const Color.fromARGB(255, 11, 54, 63),
-        body: Center(
-            child: SizedBox(
-                width: 400,
-                height: 750,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(children: [boton(() => info(), Icons.help)]),
-                      SizedBox(
-                          height: 600,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const SizedBox(
-                                    child: Icon(Icons.psychology_alt,
-                                        color:
-                                            Color.fromARGB(255, 110, 217, 161),
-                                        size: 80)),
-                                campoText(opcionUn,
-                                    'Separa las opciones con una coma'),
-                                SizedBox(
-                                    width: 600,
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          boton(() {
-                                            guardar();
-                                            elegirOpcion();
-                                          }, Icons.check_circle),
-                                          boton(() {
-                                            guardar();
-                                            lista();
-                                          }, Icons.playlist_add_check_circle),
-                                          boton(() => recuperar(),
-                                              Icons.replay_circle_filled),
-                                          boton(() => limpiar(), Icons.cancel)
-                                        ])),
-                                isLoading
-                                    ? const CircularProgressIndicator(
-                                        valueColor: AlwaysStoppedAnimation<
-                                                Color>(
-                                            Color.fromARGB(255, 110, 217, 161)))
-                                    : SizedBox(
-                                        width: 340,
-                                        height: 150,
-                                        child: Center(
-                                            child: Scrollbar(
-                                                child: SingleChildScrollView(
-                                                    physics:
-                                                        const AlwaysScrollableScrollPhysics(),
-                                                    child: Text(decision,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: const TextStyle(
-                                                            color: Colors
-                                                                .white))))))
-                              ])),
-                    ]))));
+    return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: const Color.fromARGB(255, 11, 54, 63),
+            body: Center(
+                child: SizedBox(
+                    width: 400,
+                    height: 750,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                              width: 350,
+                              child: Row(
+                                  children: [boton(() => info(), Icons.help)])),
+                          SizedBox(
+                              height: 600,
+                              child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const SizedBox(
+                                        child: Icon(Icons.psychology_alt,
+                                            color: Color.fromARGB(
+                                                255, 110, 217, 161),
+                                            size: 90)),
+                                    campoText(opcionUn,
+                                        'Separa las opciones con una coma'),
+                                    SizedBox(
+                                        width: 600,
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              boton(() {
+                                                guardar();
+                                                elegirOpcion();
+                                              }, Icons.check_circle),
+                                              boton(() {
+                                                guardar();
+                                                lista();
+                                              }, Icons.playlist_add_check_circle),
+                                              boton(() => recuperar(),
+                                                  Icons.replay_circle_filled),
+                                              boton(
+                                                  () => limpiar(), Icons.cancel)
+                                            ])),
+                                    isLoading
+                                        ? const CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Color.fromARGB(
+                                                        255, 110, 217, 161)))
+                                        : SizedBox(
+                                            width: 340,
+                                            height: 150,
+                                            child: Center(
+                                                child: Scrollbar(
+                                                    child: SingleChildScrollView(
+                                                        physics:
+                                                            const AlwaysScrollableScrollPhysics(),
+                                                        child: Text(decision,
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: const TextStyle(
+                                                                color: Colors
+                                                                    .white))))))
+                                  ])),
+                        ])))));
   }
 }
 
@@ -248,7 +259,14 @@ campoText(TextEditingController controlador, String text) {
           decoration: InputDecoration(
               hintText: text,
               contentPadding: const EdgeInsets.all(10),
-              border: const OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                      color: Color.fromARGB(255, 110, 217, 161), width: 3.0),
+                  borderRadius: BorderRadius.circular(10.0)),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                      color: Color.fromARGB(255, 216, 216, 216), width: 1.0),
+                  borderRadius: BorderRadius.circular(10.0)),
               hintStyle:
                   const TextStyle(color: Color.fromARGB(255, 216, 216, 216)))));
 }
